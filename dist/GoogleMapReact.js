@@ -7,7 +7,7 @@
 		exports["GoogleMapReact"] = factory(require("react"), require("react-dom"));
 	else
 		root["GoogleMapReact"] = factory(root["React"], root["ReactDOM"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_35__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_36__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -56,7 +56,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var _google_map = __webpack_require__(14);
+	var _google_map = __webpack_require__(15);
 
 	var _google_map2 = _interopRequireDefault(_google_map);
 
@@ -402,7 +402,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _propTypes = __webpack_require__(11);
+	var _propTypes = __webpack_require__(12);
 
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -410,7 +410,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _omit2 = _interopRequireDefault(_omit);
 
-	var _shallowEqual = __webpack_require__(7);
+	var _shallowEqual = __webpack_require__(8);
 
 	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 
@@ -461,7 +461,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 
 	    _this._onChangeHandler = function () {
-	      if (!_this.dimesionsCache_) {
+	      if (!_this.dimensionsCache_) {
 	        return;
 	      }
 
@@ -496,7 +496,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 
 	    _this._onChildMouseEnter = function (hoverKey, childProps) {
-	      if (!_this.dimesionsCache_) {
+	      if (!_this.dimensionsCache_) {
 	        return;
 	      }
 
@@ -510,7 +510,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 
 	    _this._onChildMouseLeave = function () {
-	      if (!_this.dimesionsCache_) {
+	      if (!_this.dimensionsCache_) {
 	        return;
 	      }
 
@@ -543,7 +543,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 
 	    _this._onMouseChangeHandlerRaf = function () {
-	      if (!_this.dimesionsCache_) {
+	      if (!_this.dimensionsCache_) {
 	        return;
 	      }
 
@@ -561,7 +561,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          }
 
 	          var childKey = child.key !== undefined && child.key !== null ? child.key : childIndex;
-	          var dist = _this.props.distanceToMouse(_this.dimesionsCache_[childKey], mp, child.props);
+	          var dist = _this.props.distanceToMouse(_this.dimensionsCache_[childKey], mp, child.props);
 	          if (dist < hoverDistance) {
 	            distances.push({
 	              key: childKey,
@@ -593,7 +593,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    _this._getDimensions = function (key) {
 	      var childKey = key;
-	      return _this.dimesionsCache_[childKey];
+	      return _this.dimensionsCache_[childKey];
 	    };
 
 	    _this.props.dispatcher.on('kON_CHANGE', _this._onChangeHandler);
@@ -601,7 +601,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _this.props.dispatcher.on('kON_CLICK', _this._onChildClick);
 	    _this.props.dispatcher.on('kON_MDOWN', _this._onChildMouseDown);
 
-	    _this.dimesionsCache_ = {};
+	    _this.dimensionsCache_ = {};
 	    _this.hoverKey_ = null;
 	    _this.hoverChildProps_ = null;
 	    _this.allowMouse_ = true;
@@ -625,14 +625,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.props.dispatcher.removeListener('kON_CLICK', this._onChildClick);
 	    this.props.dispatcher.removeListener('kON_MDOWN', this._onChildMouseDown);
 
-	    this.dimesionsCache_ = null;
+	    this.dimensionsCache_ = null;
 	  };
 
 	  GoogleMapMarkers.prototype.render = function render() {
 	    var _this2 = this;
 
 	    var mainElementStyle = this.props.style || mainStyle;
-	    this.dimesionsCache_ = {};
+	    this.dimensionsCache_ = {};
 
 	    var markers = _react2.default.Children.map(this.state.children, function (child, childIndex) {
 	      if (!child) return undefined;
@@ -646,7 +646,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      var latLng = child.props.latLng !== undefined ? child.props.latLng : { lat: child.props.lat, lng: child.props.lng };
 
-	      var pt = _this2.props.projectFromLeftTop ? _this2.props.geoService.fromLatLngToContainerPixel(latLng) : _this2.props.geoService.project(latLng);
+	      var pt = _this2.props.insideMapPanes ? _this2.props.geoService.fromLatLngToDivPixel(latLng) : _this2.props.geoService.fromLatLngToCenterPixel(latLng);
 
 	      var stylePtPos = {
 	        left: pt.x,
@@ -659,30 +659,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (child.props.seLatLng !== undefined || child.props.seLat !== undefined && child.props.seLng !== undefined) {
 	        var seLatLng = child.props.seLatLng !== undefined ? child.props.seLatLng : { lat: child.props.seLat, lng: child.props.seLng };
 
-	        var sePt = _this2.props.projectFromLeftTop ? _this2.props.geoService.fromLatLngToContainerPixel(seLatLng) : _this2.props.geoService.project(seLatLng);
+	        var sePt = _this2.props.insideMapPanes ? _this2.props.geoService.fromLatLngToDivPixel(seLatLng) : _this2.props.geoService.fromLatLngToCenterPixel(seLatLng);
 
 	        stylePtPos.width = sePt.x - pt.x;
 	        stylePtPos.height = sePt.y - pt.y;
 	      }
 
-	      var dx = 0;
-	      var dy = 0;
-
-	      if (!_this2.props.projectFromLeftTop) {
-	        // center projection
-	        if (_this2.props.geoService.hasSize()) {
-	          dx = _this2.props.geoService.getWidth() / 2;
-	          dy = _this2.props.geoService.getHeight() / 2;
-	        }
-	      }
+	      var containerPt = _this2.props.geoService.fromLatLngToContainerPixel(latLng);
 
 	      // to prevent rerender on child element i need to pass
 	      // const params $getDimensions and $dimensionKey instead of dimension object
 	      var childKey = child.key !== undefined && child.key !== null ? child.key : childIndex;
 
-	      _this2.dimesionsCache_[childKey] = _extends({
-	        x: pt.x + dx,
-	        y: pt.y + dy
+	      _this2.dimensionsCache_[childKey] = _extends({
+	        x: containerPt.x,
+	        y: containerPt.y
 	      }, latLng);
 
 	      return _react2.default.createElement(
@@ -723,11 +714,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  onChildMouseLeave: _propTypes2.default.func,
 	  onChildMouseEnter: _propTypes2.default.func,
 	  getHoverDistance: _propTypes2.default.func,
-	  projectFromLeftTop: _propTypes2.default.bool,
+	  insideMapPanes: _propTypes2.default.bool,
 	  prerender: _propTypes2.default.bool
 	};
 	GoogleMapMarkers.defaultProps = {
-	  projectFromLeftTop: false,
+	  insideMapPanes: false,
 	  prerender: false
 	};
 	exports.default = GoogleMapMarkers;
@@ -826,6 +817,42 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	exports.__esModule = true;
+	exports.default = addPassiveEventListener;
+	// feature detection for passive support
+	// see: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Safely_detecting_option_support
+	function hasPassiveSupport() {
+	  var passiveSupported = false;
+
+	  try {
+	    var options = Object.defineProperty({}, 'passive', {
+	      get: function get() {
+	        passiveSupported = true;
+	      }
+	    });
+
+	    window.addEventListener('test', options, options);
+	    window.removeEventListener('test', options, options);
+	  } catch (err) {
+	    passiveSupported = false;
+	  }
+
+	  return passiveSupported;
+	}
+
+	function addPassiveEventListener(element, eventName, func, capture) {
+	  element.addEventListener(eventName, func, hasPassiveSupport() ? {
+	    capture: capture,
+	    passive: true
+	  } : capture);
+	}
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 	/**
@@ -893,7 +920,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* src: https://github.com/facebook/fbjs/blob/master/packages/fbjs/src/core/shallowEqual.js */
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -934,7 +961,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = emptyFunction;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -992,7 +1019,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = invariant;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -1005,7 +1032,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var emptyFunction = __webpack_require__(8);
+	var emptyFunction = __webpack_require__(9);
 
 	/**
 	 * Similar to invariant but only logs a warning if the condition is not met.
@@ -1059,7 +1086,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = warning;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -1084,7 +1111,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // By explicitly using `prop-types` you are opting into new development behavior.
 	  // http://fb.me/prop-types-in-prod
 	  var throwOnDirectAccess = true;
-	  module.exports = __webpack_require__(33)(isValidElement, throwOnDirectAccess);
+	  module.exports = __webpack_require__(34)(isValidElement, throwOnDirectAccess);
 	} else {
 	  // By explicitly using `prop-types` you are opting into new production behavior.
 	  // http://fb.me/prop-types-in-prod
@@ -1093,7 +1120,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports) {
 
 	/**
@@ -1111,7 +1138,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -1139,17 +1166,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var _ref3$options = _ref3.options,
 	      options = _ref3$options === undefined ? {} : _ref3$options;
 	  return Object.keys(options).map(function (option) {
-	    return instance.set(option, options[option]);
+	    return instance && instance.set(option, options[option]);
 	  });
 	};
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -1157,19 +1186,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _propTypes = __webpack_require__(11);
+	var _propTypes = __webpack_require__(12);
 
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 
-	var _reactDom = __webpack_require__(35);
+	var _reactDom = __webpack_require__(36);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _google_map_map = __webpack_require__(15);
+	var _google_map_map = __webpack_require__(16);
 
 	var _google_map_map2 = _interopRequireDefault(_google_map_map);
 
-	var _marker_dispatcher = __webpack_require__(18);
+	var _marker_dispatcher = __webpack_require__(19);
 
 	var _marker_dispatcher2 = _interopRequireDefault(_marker_dispatcher);
 
@@ -1177,25 +1206,25 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _google_map_markers2 = _interopRequireDefault(_google_map_markers);
 
-	var _google_map_markers_prerender = __webpack_require__(16);
+	var _google_map_markers_prerender = __webpack_require__(17);
 
 	var _google_map_markers_prerender2 = _interopRequireDefault(_google_map_markers_prerender);
 
-	var _google_heatmap = __webpack_require__(13);
+	var _google_heatmap = __webpack_require__(14);
 
-	var _google_map_loader = __webpack_require__(17);
+	var _google_map_loader = __webpack_require__(18);
 
 	var _google_map_loader2 = _interopRequireDefault(_google_map_loader);
 
-	var _geo = __webpack_require__(21);
+	var _geo = __webpack_require__(22);
 
 	var _geo2 = _interopRequireDefault(_geo);
 
-	var _raf = __webpack_require__(29);
+	var _raf = __webpack_require__(30);
 
 	var _raf2 = _interopRequireDefault(_raf);
 
-	var _pick = __webpack_require__(28);
+	var _pick = __webpack_require__(29);
 
 	var _pick2 = _interopRequireDefault(_pick);
 
@@ -1203,37 +1232,41 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _omit2 = _interopRequireDefault(_omit);
 
-	var _log = __webpack_require__(27);
+	var _log = __webpack_require__(28);
 
 	var _log2 = _interopRequireDefault(_log);
 
-	var _isEmpty = __webpack_require__(23);
+	var _isEmpty = __webpack_require__(24);
 
 	var _isEmpty2 = _interopRequireDefault(_isEmpty);
 
-	var _isNumber = __webpack_require__(24);
+	var _isNumber = __webpack_require__(25);
 
 	var _isNumber2 = _interopRequireDefault(_isNumber);
 
-	var _detect = __webpack_require__(19);
+	var _detect = __webpack_require__(20);
 
 	var _detect2 = _interopRequireDefault(_detect);
 
-	var _shallowEqual = __webpack_require__(7);
+	var _shallowEqual = __webpack_require__(8);
 
 	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 
-	var _isPlainObject = __webpack_require__(25);
+	var _isPlainObject = __webpack_require__(26);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _isArraysEqualEps = __webpack_require__(22);
+	var _isArraysEqualEps = __webpack_require__(23);
 
 	var _isArraysEqualEps2 = _interopRequireDefault(_isArraysEqualEps);
 
-	var _detectElementResize = __webpack_require__(20);
+	var _detectElementResize = __webpack_require__(21);
 
 	var _detectElementResize2 = _interopRequireDefault(_detectElementResize);
+
+	var _passiveEvents = __webpack_require__(7);
+
+	var _passiveEvents2 = _interopRequireDefault(_passiveEvents);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1446,10 +1479,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	            div.style.width = K_MAX_WIDTH; // prevents some chrome draw defects
 	            div.style.height = K_MAX_HEIGHT;
 
+	            if (this_.props.overlayViewDivStyle) {
+	              var overlayViewDivStyle = this_.props.overlayViewDivStyle;
+
+	              if ((typeof overlayViewDivStyle === 'undefined' ? 'undefined' : _typeof(overlayViewDivStyle)) === 'object') {
+	                Object.keys(overlayViewDivStyle).forEach(function (property) {
+	                  div.style[property] = overlayViewDivStyle[property];
+	                });
+	              }
+	            }
+
 	            var panes = this.getPanes();
 	            panes.overlayMouseTarget.appendChild(div);
 	            this_.geoService_.setMapCanvasProjection(maps, overlay.getProjection());
-
 	            _reactDom2.default.unstable_renderSubtreeIntoContainer(this_, _react2.default.createElement(_google_map_markers2.default, {
 	              experimental: this_.props.experimental,
 	              onChildClick: this_._onChildClick,
@@ -1457,7 +1499,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	              onChildMouseEnter: this_._onChildMouseEnter,
 	              onChildMouseLeave: this_._onChildMouseLeave,
 	              geoService: this_.geoService_,
-	              projectFromLeftTop: true,
+	              insideMapPanes: true,
 	              distanceToMouse: this_.props.distanceToMouse,
 	              getHoverDistance: this_._getHoverDistance,
 	              dispatcher: this_.markersDispatcher_
@@ -1473,13 +1515,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	          },
 	          draw: function draw() {
-	            var div = overlay.div;
-	            var overlayProjection = overlay.getProjection();
-	            var ptx = overlayProjection.fromLatLngToDivPixel(overlayProjection.fromContainerPixelToLatLng({ x: 0, y: 0 }));
-
-	            // need round for safari still can't find what need for firefox
-	            var ptxRounded = (0, _detect2.default)().isSafari ? { x: Math.round(ptx.x), y: Math.round(ptx.y) } : { x: ptx.x, y: ptx.y };
-
 	            this_.updateCounter_++;
 	            this_._onBoundsChanged(map, maps, !this_.props.debounced);
 
@@ -1488,10 +1523,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	              this_.googleApiLoadedCalled_ = true;
 	            }
 
-	            div.style.left = ptxRounded.x + 'px';
-	            div.style.top = ptxRounded.y + 'px';
+	            if (this_.mouse_) {
+	              var latLng = this_.geoService_.fromContainerPixelToLatLng(this_.mouse_);
+	              this_.mouse_.lat = latLng.lat;
+	              this_.mouse_.lng = latLng.lng;
+	            }
+
+	            this_._onChildMouseMove();
+
 	            if (this_.markersDispatcher_) {
 	              this_.markersDispatcher_.emit('kON_CHANGE');
+	              if (this_.fireMouseEventOnIdle_) {
+	                this_.markersDispatcher_.emit('kON_MOUSE_POSITION_CHANGE');
+	              }
 	            }
 	          }
 	        });
@@ -1501,6 +1545,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        overlay.setMap(map);
 	        if (_this.props.heatmap.positions) {
 	          _this.heatmap.setMap(map);
+	        }
+
+	        if (_this.props.onTilesLoaded) {
+	          maps.event.addListener(map, 'tilesloaded', function () {
+	            this_._onTilesLoaded();
+	          });
 	        }
 
 	        maps.event.addListener(map, 'zoom_changed', function () {
@@ -1558,32 +1608,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	          this_.updateCounter_++;
 	          this_._onBoundsChanged(map, maps);
 
-	          if (_this.mouse_) {
-	            var latLng = _this.geoService_.unproject(_this.mouse_, true);
-	            _this.mouse_.lat = latLng.lat;
-	            _this.mouse_.lng = latLng.lng;
-	          }
-
-	          _this._onChildMouseMove();
-
 	          this_.dragTime_ = 0;
-
-	          var div = overlay.div;
-	          var overlayProjection = overlay.getProjection();
-	          if (div && overlayProjection) {
-	            var ptx = overlayProjection.fromLatLngToDivPixel(overlayProjection.fromContainerPixelToLatLng({ x: 0, y: 0 }));
-	            // need round for safari still can't find what need for firefox
-	            var ptxRounded = (0, _detect2.default)().isSafari ? { x: Math.round(ptx.x), y: Math.round(ptx.y) } : { x: ptx.x, y: ptx.y };
-
-	            div.style.left = ptxRounded.x + 'px';
-	            div.style.top = ptxRounded.y + 'px';
-	          }
 
 	          if (this_.markersDispatcher_) {
 	            this_.markersDispatcher_.emit('kON_CHANGE');
-	            if (this_.fireMouseEventOnIdle_) {
-	              this_.markersDispatcher_.emit('kON_MOUSE_POSITION_CHANGE');
-	            }
 	          }
 	        });
 
@@ -1609,7 +1637,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        maps.event.addListener(map, 'drag', function () {
 	          this_.dragTime_ = new Date().getTime();
-	          this_._onDrag();
+	          this_._onDrag(map);
 	        });
 	        // user choosing satellite vs roads, etc
 	        maps.event.addListener(map, 'maptypeid_changed', function () {
@@ -1662,6 +1690,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var _this$props5;
 
 	      return _this.props.onZoomAnimationEnd && (_this$props5 = _this.props).onZoomAnimationEnd.apply(_this$props5, arguments);
+	    };
+
+	    _this._onTilesLoaded = function () {
+	      return _this.props.onTilesLoaded && _this.props.onTilesLoaded();
 	    };
 
 	    _this._onChildClick = function () {
@@ -1756,7 +1788,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _this.mouse_.x = mousePosX;
 	      _this.mouse_.y = mousePosY;
 
-	      var latLng = _this.geoService_.unproject(_this.mouse_, true);
+	      var latLng = _this.geoService_.fromContainerPixelToLatLng(_this.mouse_);
 	      _this.mouse_.lat = latLng.lat;
 	      _this.mouse_.lng = latLng.lng;
 
@@ -1980,18 +2012,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var _this2 = this;
 
 	    this.mounted_ = true;
-	    window.addEventListener('resize', this._onWindowResize);
-	    window.addEventListener('keydown', this._onKeyDownCapture, true);
+	    (0, _passiveEvents2.default)(window, 'resize', this._onWindowResize, false);
+	    (0, _passiveEvents2.default)(window, 'keydown', this._onKeyDownCapture, true);
 	    var mapDom = _reactDom2.default.findDOMNode(this.googleMapDom_);
 	    // gmap can't prevent map drag if mousedown event already occured
 	    // the only workaround I find is prevent mousedown native browser event
 
 	    if (mapDom) {
-	      mapDom.addEventListener('mousedown', this._onMapMouseDownNative, true);
+	      (0, _passiveEvents2.default)(mapDom, 'mousedown', this._onMapMouseDownNative, true);
 	    }
 
-	    window.addEventListener('mouseup', this._onChildMouseUp, false);
-
+	    (0, _passiveEvents2.default)(window, 'mouseup', this._onChildMouseUp, false);
 	    var bootstrapURLKeys = _extends({}, this.props.apiKey && { key: this.props.apiKey }, this.props.bootstrapURLKeys);
 	    var libraries = {
 	      visualization: this.props.heatmapLibrary,
@@ -2028,9 +2059,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 
-	    if (nextProps.updateHeatmap) {
+	    if (this.props.updateHeatmap) {
 	      setTimeout(function () {
-	        return (0, _google_heatmap.optionsHeatmap)(_this3.heatmap, nextProps.heatmap);
+	        return (0, _google_heatmap.optionsHeatmap)(_this3.heatmap, _this3.props.heatmap);
 	      });
 	    }
 
@@ -2169,7 +2200,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      onChildMouseEnter: this._onChildMouseEnter,
 	      onChildMouseLeave: this._onChildMouseLeave,
 	      geoService: this.geoService_,
-	      projectFromLeftTop: false,
+	      insideMapPanes: false,
 	      distanceToMouse: this.props.distanceToMouse,
 	      getHoverDistance: this._getHoverDistance,
 	      dispatcher: this.markersDispatcher_
@@ -2218,6 +2249,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  onZoomAnimationEnd: _propTypes2.default.func,
 	  onDrag: _propTypes2.default.func,
 	  onMapTypeIdChange: _propTypes2.default.func,
+	  onTilesLoaded: _propTypes2.default.func,
 	  options: _propTypes2.default.any,
 	  distanceToMouse: _propTypes2.default.func,
 	  hoverDistance: _propTypes2.default.number,
@@ -2261,7 +2293,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = GoogleMap;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2315,7 +2347,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = GoogleMapMap;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2355,7 +2387,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2386,7 +2418,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = function (bootstrapURLKeys, libraries) {
 	  if (!$script_) {
-	    $script_ = __webpack_require__(34); // eslint-disable-line
+	    $script_ = __webpack_require__(35); // eslint-disable-line
 	  }
 
 	  // call from outside google-map-react
@@ -2433,12 +2465,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, '');
 
 	    var baseUrl = getUrl(bootstrapURLKeys.region);
-	    var librariesUrl = Object.keys(libraries).reduce(function (libraryUrl, libraryKey) {
+	    var librariesUrl = Object.keys(libraries).some(function (e) {
+	      return libraries[e];
+	    }) && Object.keys(libraries).reduce(function (libraryUrl, libraryKey) {
 	      if (libraries[libraryKey]) {
 	        return '' + libraryUrl + libraryKey + ',';
 	      }
 	      return libraryUrl;
-	    }, '&libraries=').slice(0, -1);
+	    }, '&libraries=').slice(0, -1) || '';
 
 	    $script_('' + baseUrl + API_PATH + params + librariesUrl, function () {
 	      return typeof window.google === 'undefined' && reject(new Error('google map initialization error (not loaded)'));
@@ -2451,14 +2485,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
 
-	var _eventemitter = __webpack_require__(30);
+	var _eventemitter = __webpack_require__(31);
 
 	var _eventemitter2 = _interopRequireDefault(_eventemitter);
 
@@ -2505,7 +2539,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = MarkerDispatcher;
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2558,11 +2592,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ }),
-/* 20 */
-/***/ (function(module, exports) {
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
+	var _passiveEvents = __webpack_require__(7);
+
+	var _passiveEvents2 = _interopRequireDefault(_passiveEvents);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// Reliable `window` and `document` detection
+	var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
+
+	// Check `document` and `window` in case of server-side rendering
 	/* eslint-disable */
 	/**
 	* Detect Element Resize.
@@ -2574,10 +2618,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	* version: 0.5.3
 	**/
 
-	// Reliable `window` and `document` detection
-	var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
-
-	// Check `document` and `window` in case of server-side rendering
 	var _window;
 	if (canUseDOM) {
 	  _window = window;
@@ -2708,7 +2748,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      element.__resizeTriggers__.innerHTML = '<div class="expand-trigger"><div></div></div>' + '<div class="contract-trigger"></div>';
 	      element.appendChild(element.__resizeTriggers__);
 	      resetTriggers(element);
-	      element.addEventListener('scroll', scrollListener, true);
+
+	      (0, _passiveEvents2.default)(element, 'scroll', scrollListener, true);
 
 	      /* Listen for a css animation to detect element display/re-attach */
 	      animationstartevent && element.__resizeTriggers__.addEventListener(animationstartevent, function (e) {
@@ -2736,7 +2777,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2753,7 +2794,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _lat_lng2 = _interopRequireDefault(_lat_lng);
 
-	var _transform = __webpack_require__(26);
+	var _transform = __webpack_require__(27);
 
 	var _transform2 = _interopRequireDefault(_transform);
 
@@ -2798,34 +2839,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return this.hasSize_;
 	  };
 
-	  Geo.prototype.unproject = function unproject(ptXY, viewFromLeftTop) {
-	    var ptRes = void 0;
-	    if (viewFromLeftTop) {
-	      var ptxy = _extends({}, ptXY);
-	      ptxy.x -= this.transform_.width / 2;
-	      ptxy.y -= this.transform_.height / 2;
-	      ptRes = this.transform_.pointLocation(_pointGeometry2.default.convert(ptxy));
-	    } else {
-	      ptRes = this.transform_.pointLocation(_pointGeometry2.default.convert(ptXY));
-	    }
+	  /** Returns the pixel position relative to the map center. */
 
-	    ptRes.lng -= 360 * Math.round(ptRes.lng / 360); // convert 2 google format
-	    return ptRes;
-	  };
 
-	  Geo.prototype.project = function project(ptLatLng, viewFromLeftTop) {
-	    if (viewFromLeftTop) {
-	      var pt = this.transform_.locationPoint(_lat_lng2.default.convert(ptLatLng));
-	      pt.x -= this.transform_.worldSize * Math.round(pt.x / this.transform_.worldSize);
-
-	      pt.x += this.transform_.width / 2;
-	      pt.y += this.transform_.height / 2;
-
-	      return pt;
-	    }
-
+	  Geo.prototype.fromLatLngToCenterPixel = function fromLatLngToCenterPixel(ptLatLng) {
 	    return this.transform_.locationPoint(_lat_lng2.default.convert(ptLatLng));
 	  };
+
+	  /**
+	   * Returns the pixel position relative to the map panes,
+	   * or relative to the map center if there are no panes.
+	   */
+
+
+	  Geo.prototype.fromLatLngToDivPixel = function fromLatLngToDivPixel(ptLatLng) {
+	    if (this.mapCanvasProjection_) {
+	      var latLng = new this.maps_.LatLng(ptLatLng.lat, ptLatLng.lng);
+	      return this.mapCanvasProjection_.fromLatLngToDivPixel(latLng);
+	    }
+	    return this.fromLatLngToCenterPixel(ptLatLng);
+	  };
+
+	  /** Returns the pixel position relative to the map top-left. */
+
 
 	  Geo.prototype.fromLatLngToContainerPixel = function fromLatLngToContainerPixel(ptLatLng) {
 	    if (this.mapCanvasProjection_) {
@@ -2833,7 +2869,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return this.mapCanvasProjection_.fromLatLngToContainerPixel(latLng);
 	    }
 
-	    return this.project(ptLatLng, true);
+	    var pt = this.fromLatLngToCenterPixel(ptLatLng);
+	    pt.x -= this.transform_.worldSize * Math.round(pt.x / this.transform_.worldSize);
+
+	    pt.x += this.transform_.width / 2;
+	    pt.y += this.transform_.height / 2;
+
+	    return pt;
+	  };
+
+	  /** Returns the LatLng for the given offset from the map top-left. */
+
+
+	  Geo.prototype.fromContainerPixelToLatLng = function fromContainerPixelToLatLng(ptXY) {
+	    if (this.mapCanvasProjection_) {
+	      var latLng = this.mapCanvasProjection_.fromContainerPixelToLatLng(ptXY);
+	      return { lat: latLng.lat(), lng: latLng.lng() };
+	    }
+
+	    var ptxy = _extends({}, ptXY);
+	    ptxy.x -= this.transform_.width / 2;
+	    ptxy.y -= this.transform_.height / 2;
+	    var ptRes = this.transform_.pointLocation(_pointGeometry2.default.convert(ptxy));
+
+	    ptRes.lng -= 360 * Math.round(ptRes.lng / 360); // convert 2 google format
+	    return ptRes;
 	  };
 
 	  Geo.prototype.getWidth = function getWidth() {
@@ -2861,14 +2921,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var bndL = margins && margins[3] || 0;
 
 	    if (this.getWidth() - bndR - bndL > 0 && this.getHeight() - bndT - bndB > 0) {
-	      var topLeftCorner = this.unproject({
+	      var topLeftCorner = this.transform_.pointLocation(_pointGeometry2.default.convert({
 	        x: bndL - this.getWidth() / 2,
 	        y: bndT - this.getHeight() / 2
-	      });
-	      var bottomRightCorner = this.unproject({
+	      }));
+	      var bottomRightCorner = this.transform_.pointLocation(_pointGeometry2.default.convert({
 	        x: this.getWidth() / 2 - bndR,
 	        y: this.getHeight() / 2 - bndB
-	      });
+	      }));
 
 	      var res = [topLeftCorner.lat, topLeftCorner.lng, // NW
 	      bottomRightCorner.lat, bottomRightCorner.lng, // SE
@@ -2892,7 +2952,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Geo;
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -2912,7 +2972,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2937,7 +2997,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = isEmpty;
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2959,7 +3019,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2995,7 +3055,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3162,7 +3222,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Transform;
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -3175,7 +3235,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = log2;
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -3194,7 +3254,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -3212,7 +3272,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3507,7 +3567,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports) {
 
 	/*
@@ -3603,7 +3663,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -3616,9 +3676,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	if (true) {
-	  var invariant = __webpack_require__(9);
-	  var warning = __webpack_require__(10);
-	  var ReactPropTypesSecret = __webpack_require__(12);
+	  var invariant = __webpack_require__(10);
+	  var warning = __webpack_require__(11);
+	  var ReactPropTypesSecret = __webpack_require__(13);
 	  var loggedTypeFailures = {};
 	}
 
@@ -3668,7 +3728,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -3680,13 +3740,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var emptyFunction = __webpack_require__(8);
-	var invariant = __webpack_require__(9);
-	var warning = __webpack_require__(10);
-	var assign = __webpack_require__(31);
+	var emptyFunction = __webpack_require__(9);
+	var invariant = __webpack_require__(10);
+	var warning = __webpack_require__(11);
+	var assign = __webpack_require__(32);
 
-	var ReactPropTypesSecret = __webpack_require__(12);
-	var checkPropTypes = __webpack_require__(32);
+	var ReactPropTypesSecret = __webpack_require__(13);
+	var checkPropTypes = __webpack_require__(33);
 
 	module.exports = function(isValidElement, throwOnDirectAccess) {
 	  /* global Symbol */
@@ -4216,7 +4276,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -4345,10 +4405,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_35__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_36__;
 
 /***/ })
 /******/ ])

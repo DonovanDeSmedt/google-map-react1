@@ -13,4 +13,6 @@ export const generateHeatmap = (instance, { positions }) =>
   });
 
 export const optionsHeatmap = (instance, { options = {} }) =>
-  Object.keys(options).map(option => instance.set(option, options[option]));
+  Object.keys(options).map(
+    option => instance && instance.set(option, options[option])
+  );
